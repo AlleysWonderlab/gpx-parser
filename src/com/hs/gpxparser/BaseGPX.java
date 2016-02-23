@@ -6,8 +6,16 @@ import java.util.ArrayList;
 import com.hs.gpxparser.extension.IExtensionParser;
 
 class BaseGPX {
+	protected static final SimpleDateFormat xmlDateFormatDefault = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+	protected static final ArrayList<SimpleDateFormat> xmlDateFormatList;
+	static {
+		xmlDateFormatList = new ArrayList<SimpleDateFormat>();
+		xmlDateFormatList.add(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'"));
+		xmlDateFormatList.add(new SimpleDateFormat("yyyy-MM-dd\'T\'kk:mm:ss.S\'Z\'"));
+		xmlDateFormatList.add(new SimpleDateFormat("yyyy-MM-dd\'T\'kk:mm:ss.SS\'Z\'"));
+		xmlDateFormatList.add(new SimpleDateFormat("yyyy-MM-dd\'T\'kk:mm:ss.SSS\'Z\'"));
+	}
 
-	protected final SimpleDateFormat xmlDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 	protected final ArrayList<IExtensionParser> extensionParsers = new ArrayList<IExtensionParser>();
 
 	/**

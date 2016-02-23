@@ -1,19 +1,5 @@
 package com.hs.gpxparser;
 
-import java.io.InputStream;
-import java.text.ParseException;
-import java.util.Date;
-import java.util.Iterator;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.DOMException;
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
 import com.hs.gpxparser.extension.IExtensionParser;
 import com.hs.gpxparser.modal.Bounds;
 import com.hs.gpxparser.modal.Copyright;
@@ -27,6 +13,21 @@ import com.hs.gpxparser.modal.Track;
 import com.hs.gpxparser.modal.TrackSegment;
 import com.hs.gpxparser.modal.Waypoint;
 import com.hs.gpxparser.type.Fix;
+
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
  * <p>
@@ -508,10 +509,13 @@ public class GPXParser extends BaseGPX {
 	private Date getNodeValueAsDate(Node node) throws DOMException, ParseException {
 		Date val = null;
 		try {
-			val = xmlDateFormat.parse(node.getFirstChild().getNodeValue()
-					.replaceAll("([0-9\\-T]+:[0-9]{2}:[0-9.+]+):([0-9]{2})", "$1$2"));
-		} catch (ParseException e) {
-			e.printStackTrace();
+			for (SimpleDateFormat simpleDateFormat : xmlDateFormatList) {
+				try {
+					val = simpleDateFormat.parse(node.getFirstChild().getNodeValue()
+							.replaceAll("([0-9\\-T]+:[0-9]{2}:[0-9.+]+):([0-9]{2})", "$1$2"));
+					break;
+				} catch (ParseException e) {}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
